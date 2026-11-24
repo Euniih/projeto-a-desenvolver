@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+{% block title %}Chamado #{{ chamado.id }}{% endblock %}
+{% block content %}
+<p><a href="{{ url_for('index') }}">← Voltar aos chamados</a></p>
+<section class="heading"><div><p class="eyebrow">DETALHES DA SOLICITAÇÃO</p><h1>Chamado #{{ chamado.id }}</h1></div><span class="status large">{{ chamado.status }}</span></section>
+<div class="panel details">
+  <div><small>Solicitante</small><strong>{{ chamado.solicitante }}</strong></div>
+  <div><small>Equipamento</small><strong>{{ chamado.equipamento }}</strong></div>
+  <div><small>Categoria</small><strong>{{ chamado.categoria }}</strong></div>
+  <div><small>Criado em</small><strong>{{ chamado.criado_em }}</strong></div>
+  <div class="full"><small>Descrição</small><p>{{ chamado.descricao }}</p></div>
+</div>
+<div class="panel">
+  <h2>Atualizar atendimento</h2>
+  <form method="post">
+    <label>Status<select name="status">
+      {% for s in ["Aberto", "Em andamento", "Concluído"] %}
+      <option value="{{ s }}" {% if chamado.status == s %}selected{% endif %}>{{ s }}</option>
+      {% endfor %}
+    </select></label>
+    <label>Responsável<input name="responsavel" placeholder="Ex.: Técnico responsável"></label>
+    <label>Comentário / observação<textarea name="comentario" rows="3" placeholder="Descreva a movimentação realizada"></textarea></label>
+    <button class="btn" type="submit">Registrar atualização</button>
+  </form>
+</div>
+<div class="panel">
+  <h2>Histórico de atendimento</h2>
+  {% if not mongo_ok %}<p class="empty">Conecte o MongoDB para consultar o histórico NoSQL.</p>
+  {% elif historico %}
+    <div class="timeline">{% for item in historico %}
+      <article><span class="dot"></span><div><strong>{{ item.acao }}</strong><small>{{ item.data }} • {{ item.responsavel }}</small><p>{{ item.observacoes }}</p></div></article>
+    {% endfor %}</div>
+  {% else %}<p class="empty">Ainda não há movimentações registradas no MongoDB.</p>{% endif %}
+</div>
+{% endblock %}

@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% block title %}Novo chamado{% endblock %}
+{% block content %}
+<div class="form-panel">
+  <p class="eyebrow">NOVA SOLICITAÇÃO</p><h1>Abrir chamado</h1>
+  <form method="post">
+    <label>Nome do solicitante<input name="solicitante" required placeholder="Ex.: Maria Silva"></label>
+    <label>Equipamento<input name="equipamento" required placeholder="Ex.: Notebook, impressora"></label>
+    <label>Categoria<select name="categoria_id" required><option value="">Selecione</option>
+      {% for cat in categorias %}<option value="{{ cat.id }}">{{ cat.nome }}</option>{% endfor %}
+    </select></label>
+    <label>Descrição do problema<textarea name="descricao" rows="5" required placeholder="Explique o que está acontecendo..."></textarea></label>
+    <div class="actions"><a class="btn secondary" href="{{ url_for('index') }}">Cancelar</a><button class="btn" type="submit">Salvar chamado</button></div>
+  </form>
+</div>
+{% endblock %}

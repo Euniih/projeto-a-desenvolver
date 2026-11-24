@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% block title %}Chamados | Suporte Técnico{% endblock %}
+{% block content %}
+<section class="heading">
+  <div><p class="eyebrow">CENTRAL DE ATENDIMENTO</p><h1>Gerenciamento de chamados</h1>
+  <p class="muted">Cadastre solicitações e acompanhe o atendimento.</p></div>
+  <a class="btn" href="{{ url_for('novo_chamado') }}">+ Abrir chamado</a>
+</section>
+<div class="connection">MongoDB: {% if mongo_ok %}<span class="ok">conectado</span>{% else %}<span class="warn">não configurado ou indisponível</span>{% endif %}</div>
+<div class="panel">
+  <h2>Chamados cadastrados</h2>
+  {% if chamados %}
+  <div class="table-wrap"><table>
+    <thead><tr><th>Nº</th><th>Solicitante</th><th>Equipamento</th><th>Categoria</th><th>Status</th><th></th></tr></thead>
+    <tbody>{% for c in chamados %}
+      <tr><td>#{{ c.id }}</td><td>{{ c.solicitante }}</td><td>{{ c.equipamento }}</td><td>{{ c.categoria }}</td>
+      <td><span class="status">{{ c.status }}</span></td><td><a href="{{ url_for('detalhe', chamado_id=c.id) }}">Detalhes →</a></td></tr>
+    {% endfor %}</tbody>
+  </table></div>
+  {% else %}<p class="empty">Nenhum chamado cadastrado. Clique em “Abrir chamado” para começar.</p>{% endif %}
+</div>
+{% endblock %}
